@@ -4,6 +4,7 @@ import Button from '../Button';
 import { ChangeEvent, useState, KeyboardEvent, Dispatch, SetStateAction } from 'react';
 import { useTodoInput } from 'src/hooks/useTodoInput';
 import { useTodos } from 'src/hooks/useTodos';
+import Checkbox from '../Checkbox';
 
 type EditTodoItemProps = {
   item: Task;
@@ -12,7 +13,7 @@ type EditTodoItemProps = {
 
 const EditTodoItem = (editTodoItemProps: EditTodoItemProps) => {
   const { item, setIsEditing } = editTodoItemProps;
-  const { updateTodoItem, fetchTodos } = useTodos();
+  const { updateTodoItem, fetchTodos, toggleTodoStatus } = useTodos();
   const { inputValue, setInputValue } = useTodoInput(item.todo);
   const [draftValue, setDraftValue] = useState<Task['todo']>(item.todo);
 
@@ -38,6 +39,15 @@ const EditTodoItem = (editTodoItemProps: EditTodoItemProps) => {
     }
   };
 
+  const handleCheck = async () => {
+    try {
+      await toggleTodoStatus(item);
+    } catch (e) {
+      console.error(e);
+      alert('error occurred. please try again.');
+    }
+  };
+
   const handleKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !e.nativeEvent.isComposing) {
       editTodo(draftValue);
@@ -59,8 +69,9 @@ const EditTodoItem = (editTodoItemProps: EditTodoItemProps) => {
     saveEdit();
   };
   return (
-    <form onSubmit={handleSubmitButtonClick} className="flex w-full items-center gap-4">
-      <label htmlFor={item.id} className="flex flex-1 items-center gap-2 hover:cursor-pointer">
+    <form onSubmit={handleSubmitButtonClick} className="flex items-center w-full gap-4">
+      <label htmlFor={item.id} className="flex items-center flex-1 gap-2 hover:cursor-pointer">
+        <Checkbox id={item.id} checked={item.isCompleted} onChange={handleCheck} />
         <Input
           data-testid="modify-input"
           className="flex-1 pl-4 text-lg"
@@ -71,7 +82,7 @@ const EditTodoItem = (editTodoItemProps: EditTodoItemProps) => {
         />
       </label>
       <div className="flex w-[112px] gap-2">
-        <Button type="submit" data-testid="submit-button" className="flex-1  active:bg-blue-300">
+        <Button type="submit" data-testid="submit-button" className="flex-1 active:bg-blue-300">
           제출
         </Button>
         <Button
