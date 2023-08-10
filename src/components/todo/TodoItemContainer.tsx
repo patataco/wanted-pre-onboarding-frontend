@@ -5,7 +5,6 @@ import EditTodoItem from './EditTodoItem';
 
 const TodoItemContainer = ({ item }: { item: Task }) => {
   const [isEditing, setIsEditing] = useState(false);
-
   const todoItemRef = useRef<HTMLLIElement>(null);
 
   useEffect(() => {
@@ -19,11 +18,11 @@ const TodoItemContainer = ({ item }: { item: Task }) => {
     return () => {
       document.removeEventListener('mousedown', onCheckClickOutside);
     };
-  }, [setIsEditing]);
+  }, [setIsEditing, isEditing]);
 
   return (
-    <li key={item.id} className="flex w-full items-center gap-4" ref={todoItemRef}>
-      {setIsEditing ? (
+    <li key={item.id} className="flex items-center w-full gap-4" ref={todoItemRef}>
+      {isEditing ? (
         <EditTodoItem item={item} setIsEditing={setIsEditing} />
       ) : (
         <TodoItem item={item} setIsEditing={setIsEditing} />

@@ -10,6 +10,7 @@ module.exports = {
     'plugin:tailwindcss/recommended',
     'plugin:prettier/recommended',
   ],
+  ignorePatterns: ['postcss.config.js', 'config.js'],
   overrides: [
     {
       env: {
@@ -20,15 +21,23 @@ module.exports = {
         sourceType: 'script',
       },
     },
+    {
+      files: ['*.ts', '*.tsx'],
+      parserOptions: {
+        project: ['./tsconfig.json'],
+      },
+    },
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: ['./tsconfig.json'],
+    project: ['./tsconfig.json', './tsconfig.eslint.json'],
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
   plugins: ['@typescript-eslint', 'simple-import-sort', 'unused-imports', 'react', 'prettier'],
   rules: {
+    'tailwindcss/classnames-order': 'off',
+    'no-debugger': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
     'no-unused-vars': 'off', // or "@typescript-eslint/no-unused-vars": "off",
     'unused-imports/no-unused-imports': 'error',
