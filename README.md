@@ -17,7 +17,7 @@ npm start
 
 ## 데모 영상
 
-Vercel을 통해 배포. [배포 링크](http://your-deployed-link-here.com)
+Vercel을 통해 배포. [DEMO](https://wanted-pre-onboarding-frontend-nu-fawn.vercel.app)
 
 ## `language & libraries`
 
